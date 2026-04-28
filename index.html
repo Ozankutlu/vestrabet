@@ -1,0 +1,331 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);color:var(--color-text-primary);font-size:14px}
+.app{padding:16px;max-width:680px}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:14px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:36px;height:36px;border-radius:10px;background:var(--color-background-info);display:flex;align-items:center;justify-content:center;font-size:18px}
+.logo-title{font-size:17px;font-weight:500;color:var(--color-text-primary)}
+.logo-sub{font-size:11px;color:var(--color-text-tertiary);margin-top:1px}
+.wallet-pill{display:flex;align-items:center;gap:8px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:20px;padding:6px 14px}
+.wallet-amt{font-size:15px;font-weight:500;color:var(--color-text-success)}
+.wallet-lbl{font-size:11px;color:var(--color-text-secondary)}
+.tabs{display:flex;gap:4px;margin-bottom:16px;background:var(--color-background-secondary);padding:4px;border-radius:10px}
+.tab{flex:1;padding:8px;border-radius:8px;border:none;background:transparent;font-size:13px;font-weight:500;color:var(--color-text-secondary);cursor:pointer;transition:all 0.15s}
+.tab.active{background:var(--color-background-primary);color:var(--color-text-primary);border:0.5px solid var(--color-border-secondary)}
+.section{display:none}
+.section.active{display:block}
+.market-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px;margin-bottom:10px}
+.market-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.market-cat{font-size:10px;font-weight:500;padding:3px 8px;border-radius:20px;margin-bottom:5px;display:inline-block}
+.cat-crypto{background:var(--color-background-info);color:var(--color-text-info)}
+.cat-sports{background:var(--color-background-success);color:var(--color-text-success)}
+.cat-politics{background:var(--color-background-warning);color:var(--color-text-warning)}
+.cat-tech{background:#EEEDFE;color:#3C3489}
+.market-q{font-size:14px;font-weight:500;line-height:1.4;color:var(--color-text-primary)}
+.market-meta{font-size:11px;color:var(--color-text-tertiary);margin-top:4px}
+.pool-badge{text-align:right}
+.pool-amt{font-size:14px;font-weight:500;color:var(--color-text-primary)}
+.pool-lbl{font-size:10px;color:var(--color-text-tertiary)}
+.odds-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.odds-btn{border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:10px 12px;cursor:pointer;background:var(--color-background-secondary);transition:all 0.15s;text-align:left}
+.odds-btn:hover{background:var(--color-background-primary);border-color:var(--color-border-primary)}
+.odds-btn.yes:hover,.odds-btn.yes.sel{background:#EAF3DE;border-color:#3B6D11}
+.odds-btn.no:hover,.odds-btn.no.sel{background:#FCEBEB;border-color:#A32D2D}
+.odds-label{font-size:12px;font-weight:500;margin-bottom:2px}
+.odds-label.yes{color:#27500A}
+.odds-label.no{color:#791F1F}
+.odds-pct{font-size:20px;font-weight:500;color:var(--color-text-primary)}
+.odds-payout{font-size:11px;color:var(--color-text-secondary)}
+.progress-wrap{background:var(--color-background-tertiary);border-radius:4px;height:6px;overflow:hidden;margin-bottom:10px}
+.progress-fill{height:100%;border-radius:4px;background:#639922;transition:width 0.4s}
+.progress-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--color-text-tertiary);margin-bottom:10px;margin-top:-6px}
+.bet-row{display:flex;align-items:center;gap:8px}
+.bet-input-wrap{flex:1;position:relative}
+.bet-input-wrap input{width:100%;padding:8px 40px 8px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-primary);font-size:13px}
+.bet-currency{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--color-text-tertiary);font-weight:500}
+.bet-btn{padding:8px 16px;border-radius:var(--border-radius-md);border:none;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap}
+.btn-yes{background:#639922;color:#fff}
+.btn-yes:hover{background:#3B6D11}
+.btn-no{background:#E24B4A;color:#fff}
+.btn-no:hover{background:#A32D2D}
+.quick-bets{display:flex;gap:4px;margin-bottom:8px}
+.quick-bet{padding:4px 10px;border-radius:20px;border:0.5px solid var(--color-border-tertiary);background:transparent;font-size:11px;color:var(--color-text-secondary);cursor:pointer;transition:all 0.12s}
+.quick-bet:hover{background:var(--color-background-secondary);border-color:var(--color-border-secondary)}
+.resolved-banner{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--border-radius-md);margin-bottom:8px;font-size:12px;font-weight:500}
+.res-yes{background:#EAF3DE;color:#27500A;border:0.5px solid #97C459}
+.res-no{background:#FCEBEB;color:#791F1F;border:0.5px solid #F09595}
+.portfolio-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px;margin-bottom:10px}
+.pos-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.pos-row:last-child{border-bottom:none}
+.pos-q{font-size:13px;color:var(--color-text-primary);flex:1;margin-right:12px;line-height:1.4}
+.pos-side-yes{font-size:11px;font-weight:500;color:#27500A;background:#EAF3DE;padding:2px 8px;border-radius:20px}
+.pos-side-no{font-size:11px;font-weight:500;color:#791F1F;background:#FCEBEB;padding:2px 8px;border-radius:20px}
+.pos-nums{text-align:right;min-width:80px}
+.pos-staked{font-size:13px;font-weight:500}
+.pos-payout{font-size:11px;color:var(--color-text-secondary)}
+.pos-pnl-up{font-size:11px;color:var(--color-text-success);font-weight:500}
+.pos-pnl-down{font-size:11px;color:var(--color-text-danger);font-weight:500}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.stat-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center}
+.stat-num{font-size:20px;font-weight:500;color:var(--color-text-primary)}
+.stat-lbl{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.leaderboard-row{display:flex;align-items:center;padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.lb-rank{font-size:13px;font-weight:500;color:var(--color-text-tertiary);width:24px}
+.lb-rank.gold{color:#BA7517}
+.lb-avatar{width:32px;height:32px;border-radius:50%;background:var(--color-background-info);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:var(--color-text-info);margin:0 10px;flex-shrink:0}
+.lb-name{flex:1;font-size:13px;font-weight:500}
+.lb-wins{font-size:11px;color:var(--color-text-secondary)}
+.lb-profit{font-size:13px;font-weight:500;color:var(--color-text-success)}
+.toast{position:absolute;top:12px;right:12px;background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:10px 14px;font-size:13px;box-shadow:none;z-index:10;display:none;max-width:220px}
+.toast.show{display:block}
+.toast.t-success{border-color:#3B6D11;color:#27500A;background:#EAF3DE}
+.toast.t-error{border-color:#A32D2D;color:#791F1F;background:#FCEBEB}
+.empty-state{text-align:center;padding:32px 16px;color:var(--color-text-tertiary);font-size:13px}
+</style>
+
+<h2 class="sr-only">VSTR tahmin piyasası oyunu — VSTR coin ile iddialara katıl</h2>
+
+<div class="app" style="position:relative">
+<div id="toast" class="toast"></div>
+
+<div class="header">
+  <div class="logo">
+    <div class="logo-icon">&#9670;</div>
+    <div>
+      <div class="logo-title">VestraBet</div>
+      <div class="logo-sub">Tahmin Piyasası — $VSTR ile oyna</div>
+    </div>
+  </div>
+  <div class="wallet-pill">
+    <div>
+      <div class="wallet-amt" id="walletAmt">5,000 VSTR</div>
+      <div class="wallet-lbl">Cüzdan</div>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('markets')">Piyasalar</button>
+  <button class="tab" onclick="switchTab('portfolio')">Portföyüm</button>
+  <button class="tab" onclick="switchTab('leaderboard')">Sıralama</button>
+</div>
+
+<div id="sec-markets" class="section active"></div>
+<div id="sec-portfolio" class="section"></div>
+<div id="sec-leaderboard" class="section"></div>
+
+</div>
+
+<script>
+const MARKETS=[
+  {id:1,cat:'crypto',catLabel:'Kripto',q:'Bitcoin bu ay 100.000$ üzerini görecek mi?',yPct:62,pool:148200,endsIn:'2g 14s',resolved:false},
+  {id:2,cat:'crypto',catLabel:'Kripto',q:'Ethereum Mayıs sonunda 4.000$\'ı aşacak mı?',yPct:44,pool:93500,endsIn:'4g 7s',resolved:false},
+  {id:3,cat:'sports',catLabel:'Spor',q:'Galatasaray bu sezon şampiyonluğu kazanacak mı?',yPct:71,pool:210400,endsIn:'18g',resolved:false},
+  {id:4,cat:'crypto',catLabel:'Kripto',q:'$VSTR coin bu hafta %20 değer artışı yapacak mı?',yPct:38,pool:67300,endsIn:'5g 3s',resolved:false},
+  {id:5,cat:'tech',catLabel:'Teknoloji',q:'Apple bu ay yeni bir ürün lansmanı yapacak mı?',yPct:55,pool:44800,endsIn:'12g',resolved:false},
+  {id:6,cat:'sports',catLabel:'Spor',q:'Fenerbahçe Avrupa Ligi\'nde çeyrek finale çıkacak mı?',yPct:49,pool:88900,endsIn:'1g 22s',resolved:true,winner:'yes'},
+  {id:7,cat:'politics',catLabel:'Politika',q:'Fed bir sonraki toplantıda faiz indirecek mi?',yPct:33,pool:156700,endsIn:'9g',resolved:false},
+  {id:8,cat:'crypto',catLabel:'Kripto',q:'Solana bu ay yeni ATH\'ye ulaşacak mı?',yPct:28,pool:72100,endsIn:'7g 11s',resolved:false},
+];
+
+const STATE={
+  wallet:5000,
+  bets:[],
+  selectedSide:{},
+  inputVals:{},
+};
+
+const LEADERBOARD=[
+  {name:'0xKara',avatar:'KA',wins:18,profit:12400,streak:5},
+  {name:'Satoshi_TR',avatar:'ST',wins:15,profit:9870,streak:3},
+  {name:'VestraWhale',avatar:'VW',wins:12,profit:7200,streak:0},
+  {name:'CryptoAli',avatar:'CA',wins:11,profit:5400,streak:2},
+  {name:'MoonBet99',avatar:'MB',wins:9,profit:3100,streak:1},
+];
+
+function fmtVSTR(n){return n>=1000?(n/1000).toFixed(1)+'K VSTR':n.toFixed(0)+' VSTR'}
+function fmtNum(n){return n>=1000?(n/1000).toFixed(1)+'K':n.toFixed(0)}
+
+function switchTab(id){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['markets','portfolio','leaderboard'][i]===id));
+  document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id==='sec-'+id));
+  if(id==='portfolio')renderPortfolio();
+  if(id==='leaderboard')renderLeaderboard();
+}
+
+function catClass(cat){return 'cat-'+cat}
+
+function renderMarkets(){
+  const el=document.getElementById('sec-markets');
+  el.innerHTML=MARKETS.map(m=>{
+    const nPct=100-m.yPct;
+    const yOdds=(1/(m.yPct/100)).toFixed(2);
+    const nOdds=(1/(nPct/100)).toFixed(2);
+    const selY=STATE.selectedSide[m.id]==='yes';
+    const selN=STATE.selectedSide[m.id]==='no';
+    const inputVal=STATE.inputVals[m.id]||'';
+    const payout=inputVal?(parseFloat(inputVal)*(selY?yOdds:nOdds)).toFixed(0):'—';
+    let resolvedHTML='';
+    if(m.resolved){
+      resolvedHTML=`<div class="resolved-banner ${m.winner==='yes'?'res-yes':'res-no'}">
+        &#10003; Sonuç: ${m.winner==='yes'?'EVET kazandı':'HAYIR kazandı'} — İddialar ödendi
+      </div>`}
+    return `<div class="market-card">
+      ${resolvedHTML}
+      <div class="market-top">
+        <div>
+          <span class="market-cat ${catClass(m.cat)}">${m.catLabel}</span>
+          <div class="market-q">${m.q}</div>
+          <div class="market-meta">Bitiş: ${m.endsIn} &nbsp;|&nbsp; Katılımcılar: ${Math.floor(m.pool/120)}</div>
+        </div>
+        <div class="pool-badge">
+          <div class="pool-amt">${fmtNum(m.pool)} VSTR</div>
+          <div class="pool-lbl">toplam havuz</div>
+        </div>
+      </div>
+      <div class="odds-row">
+        <button class="odds-btn yes ${selY?'sel':''}" onclick="selectSide(${m.id},'yes')">
+          <div class="odds-label yes">EVET</div>
+          <div class="odds-pct">${m.yPct}%</div>
+          <div class="odds-payout">Kazanç: ${yOdds}x</div>
+        </button>
+        <button class="odds-btn no ${selN?'sel':''}" onclick="selectSide(${m.id},'no')">
+          <div class="odds-label no">HAYIR</div>
+          <div class="odds-pct">${nPct}%</div>
+          <div class="odds-payout">Kazanç: ${nOdds}x</div>
+        </button>
+      </div>
+      <div class="progress-wrap"><div class="progress-fill" style="width:${m.yPct}%"></div></div>
+      <div class="progress-labels"><span>EVET ${m.yPct}%</span><span>HAYIR ${nPct}%</span></div>
+      ${m.resolved?'':`
+      <div class="quick-bets">
+        <span style="font-size:11px;color:var(--color-text-tertiary);margin-right:2px">Hızlı:</span>
+        ${[100,250,500,1000].map(v=>`<button class="quick-bet" onclick="setQuick(${m.id},${v})">${v}</button>`).join('')}
+      </div>
+      <div class="bet-row">
+        <div class="bet-input-wrap">
+          <input type="number" min="10" max="${STATE.wallet}" placeholder="Miktar girin..." id="inp-${m.id}" value="${inputVal}" oninput="onInput(${m.id},this.value)">
+          <span class="bet-currency">VSTR</span>
+        </div>
+        <button class="bet-btn ${selY?'btn-yes':'btn-no'}" onclick="placeBet(${m.id})" style="opacity:${STATE.selectedSide[m.id]?1:0.45}">
+          ${STATE.selectedSide[m.id]?(STATE.selectedSide[m.id]==='yes'?'EVET Oyna':'HAYIR Oyna'):'Taraf Seç'}
+        </button>
+      </div>
+      <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:6px;text-align:right">
+        Potansiyel kazanç: <strong style="color:var(--color-text-success)">${payout!='—'?payout+' VSTR':payout}</strong>
+        &nbsp;|&nbsp; Bakiye: ${STATE.wallet.toFixed(0)} VSTR
+      </div>`}
+    </div>`}).join('');
+}
+
+function selectSide(id,side){
+  STATE.selectedSide[id]=side;
+  renderMarkets();
+}
+
+function setQuick(id,val){
+  STATE.inputVals[id]=Math.min(val,STATE.wallet).toString();
+  renderMarkets();
+  setTimeout(()=>{const el=document.getElementById('inp-'+id);if(el)el.value=STATE.inputVals[id]},10);
+}
+
+function onInput(id,val){
+  STATE.inputVals[id]=val;
+}
+
+function placeBet(id){
+  const m=MARKETS.find(x=>x.id===id);
+  const side=STATE.selectedSide[id];
+  const raw=parseFloat(document.getElementById('inp-'+id)?.value||STATE.inputVals[id]||0);
+  if(!side){showToast('Önce EVET veya HAYIR seçin!','error');return}
+  if(!raw||raw<10){showToast('Minimum 10 VSTR gerekli!','error');return}
+  if(raw>STATE.wallet){showToast('Yetersiz VSTR bakiyesi!','error');return}
+  const nPct=100-m.yPct;
+  const odds=(1/((side==='yes'?m.yPct:nPct)/100));
+  STATE.wallet-=raw;
+  STATE.bets.push({marketId:id,q:m.q,side,amount:raw,odds:odds.toFixed(2),potPayout:(raw*odds).toFixed(0),ts:Date.now()});
+  STATE.inputVals[id]='';
+  delete STATE.selectedSide[id];
+  m.pool+=raw;
+  if(side==='yes')m.yPct=Math.min(95,Math.max(5,m.yPct+Math.random()*2));
+  else m.yPct=Math.min(95,Math.max(5,m.yPct-Math.random()*2));
+  showToast(`İddia kaydedildi! ${raw} VSTR — ${side==='yes'?'EVET':'HAYIR'}','success`,'success');
+  document.getElementById('walletAmt').textContent=fmtVSTR(STATE.wallet);
+  renderMarkets();
+}
+
+function renderPortfolio(){
+  const el=document.getElementById('sec-portfolio');
+  if(!STATE.bets.length){
+    el.innerHTML=`<div class="empty-state"><div style="font-size:32px;margin-bottom:12px">&#128200;</div><div style="font-size:14px;font-weight:500;margin-bottom:6px">Henüz iddianız yok</div><div>Piyasalar sekmesinden tahminlerinizi girin!</div></div>`;return;
+  }
+  const totalStaked=STATE.bets.reduce((a,b)=>a+b.amount,0);
+  const totalPot=STATE.bets.reduce((a,b)=>a+parseFloat(b.potPayout),0);
+  el.innerHTML=`
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-num">${STATE.bets.length}</div><div class="stat-lbl">Aktif iddia</div></div>
+    <div class="stat-card"><div class="stat-num">${totalStaked.toFixed(0)}</div><div class="stat-lbl">VSTR yatırıldı</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--color-text-success)">${totalPot.toFixed(0)}</div><div class="stat-lbl">Pot. kazanç</div></div>
+  </div>
+  <div class="portfolio-card">
+    <div style="font-size:13px;font-weight:500;margin-bottom:2px;color:var(--color-text-secondary)">Aktif İddiarlarım</div>
+    ${STATE.bets.map(b=>{
+      const m=MARKETS.find(x=>x.id===b.marketId);
+      const curPct=b.side==='yes'?m.yPct:(100-m.yPct);
+      const initPct=100/b.odds;
+      const pnlPct=((curPct-initPct)/initPct*100).toFixed(1);
+      const pnlUp=parseFloat(pnlPct)>=0;
+      return `<div class="pos-row">
+        <div style="flex:1;margin-right:12px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+            <span class="pos-side-${b.side}">${b.side==='yes'?'EVET':'HAYIR'}</span>
+          </div>
+          <div class="pos-q">${b.q}</div>
+        </div>
+        <div class="pos-nums">
+          <div class="pos-staked">${b.amount.toFixed(0)} VSTR</div>
+          <div class="pos-payout">Kazanç: ${b.potPayout} VSTR</div>
+          <div class="${pnlUp?'pos-pnl-up':'pos-pnl-down'}">${pnlUp?'+':''}${pnlPct}% trend</div>
+        </div>
+      </div>`}).join('')}
+  </div>`;
+}
+
+function renderLeaderboard(){
+  const el=document.getElementById('sec-leaderboard');
+  const myBets=STATE.bets.length;
+  el.innerHTML=`
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-num">#—</div><div class="stat-lbl">Sıralamanız</div></div>
+    <div class="stat-card"><div class="stat-num">${myBets}</div><div class="stat-lbl">Toplam iddia</div></div>
+    <div class="stat-card"><div class="stat-num">${STATE.wallet.toFixed(0)}</div><div class="stat-lbl">VSTR bakiye</div></div>
+  </div>
+  <div class="portfolio-card">
+    <div style="font-size:13px;font-weight:500;margin-bottom:12px;color:var(--color-text-secondary)">Bu hafta en iyi tahminler</div>
+    ${LEADERBOARD.map((p,i)=>`<div class="leaderboard-row">
+      <div class="lb-rank ${i===0?'gold':(i===1?'silver':'')}">${i===0?'&#9733;':i+1}</div>
+      <div class="lb-avatar">${p.avatar}</div>
+      <div style="flex:1">
+        <div class="lb-name">${p.name}</div>
+        <div class="lb-wins">${p.wins} kazanç${p.streak>1?` &nbsp;&#128293; ${p.streak} seri`:''}</div>
+      </div>
+      <div class="lb-profit">+${fmtNum(p.profit)} VSTR</div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function showToast(msg,type){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast show t-'+type;
+  setTimeout(()=>t.className='toast',2800);
+}
+
+setInterval(()=>{
+  MARKETS.forEach(m=>{if(!m.resolved&&Math.random()<0.3){const d=(Math.random()-0.5)*3;m.yPct=Math.min(95,Math.max(5,m.yPct+d));}});
+  if(document.getElementById('sec-markets').classList.contains('active'))renderMarkets();
+},4000);
+
+renderMarkets();
+</script>
